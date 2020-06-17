@@ -1,17 +1,15 @@
 {
-  "name": "kametee",
-  "displayName": "kametee",
+  "name": "Cart Management",
+  "displayName": "Cart Management",
   "expo": {
-    "name": "kametee",
-    "slug": "kametee",
+    "name": "Cart Management",
+    "slug": "cartManagement",
     "version": "1.0.0",
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
-    "assetBundlePatterns": [
-      "**/*"
-    ]
+    "platforms": ["ios", "android", "web"],
+    "assetBundlePatterns": ["**/*"],
+    "android": {
+      "package": "in.cart.management",
+      "versionCode": 1
+    }
   }
 }

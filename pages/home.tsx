@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { SectionList, Image, View, Text } from 'react-native';
+import { SectionList, Image, View, Text, ScrollView } from 'react-native';
 import styled from 'styled-components/native';
 import {
   useDispatch,
@@ -20,9 +20,7 @@ import { RootStackParamList } from '../App';
 
 const RestaurantImage = require('../assets/images/restaurant.jpeg');
 
-const ContainerRoot = styled.View`
-  display: flex;
-  justify-content: center;
+const ContainerRoot = styled.ScrollView`
   position: relative;
 `;
 
@@ -46,7 +44,7 @@ const FloatingButtonContainer = styled.View`
   position: absolute;
   display: flex;
   align-items: center;
-  bottom: 200px;
+  bottom: 0px;
   align-self: center;
   width: 100%;
   height: 100px;
@@ -54,8 +52,8 @@ const FloatingButtonContainer = styled.View`
 `;
 
 const SectionContainer = styled.View`
-  height: 100%;
   padding: 10px;
+  height: 100%;
 `;
 
 const CartButton = styled.TouchableOpacity`
@@ -126,7 +124,9 @@ const Card = styled.View`
   elevation: 4;
   border-radius: 5px;
 `;
-
+const ItemsWrapper = styled.View`
+  height: 200px;
+`;
 type CategoryCount = {
   category: Category;
   count: number;
@@ -193,50 +193,53 @@ const Home: React.FC = () => {
   );
 
   return (
-    <ContainerRoot>
-      <TopWrapper>
-        <RestaurantContainer>
-          <Image
-            source={RestaurantImage}
-            style={{ height: 300, width: '100%' }}
+    <View>
+      <ContainerRoot>
+        <TopWrapper>
+          <RestaurantContainer>
+            <Image
+              source={RestaurantImage}
+              style={{ height: 300, width: '100%' }}
+            />
+
+            <Card>
+              <View>
+                <RestName>Inka Restaurant</RestName>
+                <RestDetails>
+                  5.0 (200+) | All days: 09:00 AM - 06:00 PM
+                </RestDetails>
+                <RestContact>Reach Us at : 9998887771</RestContact>
+                <BookButton>
+                  <ButtonText>Book a Table</ButtonText>
+                </BookButton>
+              </View>
+            </Card>
+          </RestaurantContainer>
+        </TopWrapper>
+        <SectionContainer>
+          <SectionList
+            ref={sectionRef}
+            sections={sections}
+            renderItem={({ item }) => <DishRow dish={item} />}
+            renderSectionHeader={({ section }) => (
+              <SectionHeader title={section.title} />
+            )}
           />
-
-          <Card>
-            <View>
-              <RestName>Inka Restaurant</RestName>
-              <RestDetails>
-                5.0 (200+) | All days: 09:00 AM - 06:00 PM
-              </RestDetails>
-              <RestContact>Reach Us at : 9998887771</RestContact>
-              <BookButton>
-                <ButtonText>Book a Table</ButtonText>
-              </BookButton>
-            </View>
-          </Card>
-        </RestaurantContainer>
-      </TopWrapper>
-      <SectionContainer>
-        <SectionList
-          ref={sectionRef}
-          sections={sections}
-          renderItem={({ item }) => <DishRow dish={item} />}
-          renderSectionHeader={({ section }) => (
-            <SectionHeader title={section.title} />
-          )}
-        />
-      </SectionContainer>
-
-      <ActionSheet
-        ref={actionSheetRef}
-        title='Categories'
-        options={[
-          ...categoryCountArray.map(
-            (categoryCount: CategoryCount) =>
-              `${categoryCount.category} (${categoryCount.count})`
-          ),
-        ]}
-        onPress={handleCategorySelection}
-      />
+        </SectionContainer>
+        <ItemsWrapper>
+          <ActionSheet
+            ref={actionSheetRef}
+            title='Categories'
+            options={[
+              ...categoryCountArray.map(
+                (categoryCount: CategoryCount) =>
+                  `${categoryCount.category} (${categoryCount.count})`
+              ),
+            ]}
+            onPress={handleCategorySelection}
+          />
+        </ItemsWrapper>
+      </ContainerRoot>
       <FloatingButtonContainer>
         <FloatingMenuButton onPress={handleMenuClick}>
           <ButtonText>Menu</ButtonText>
@@ -245,7 +248,7 @@ const Home: React.FC = () => {
           <ButtonText>VIEW CART</ButtonText>
         </CartButton>
       </FloatingButtonContainer>
-    </ContainerRoot>
+    </View>
   );
 };
 
